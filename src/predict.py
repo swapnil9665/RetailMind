@@ -27,9 +27,13 @@ def predict(customer_data):
 
     # Make prediction
     prediction = model.predict(customer_df)[0]
-
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+    print(model.predict(customer_df))
+    print(model.classes_)
     # Get churn probability
     probability = model.predict_proba(customer_df)[0][1]
+    print(model.predict_proba(customer_df))
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
     # Convert numerical prediction into label
     churn_label = "Yes" if prediction == 1 else "No"
