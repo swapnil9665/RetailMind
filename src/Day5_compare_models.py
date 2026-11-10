@@ -97,7 +97,7 @@ def evaluate_model(name, y_true, y_pred, y_prob):
 # 8. Compare models
 results = [
     evaluate_model(
-        "Day 4 XGBoost",
+        "Day 4 Random Forest",
         y_test,
         xgb_pred,
         xgb_prob

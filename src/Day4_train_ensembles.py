@@ -61,7 +61,7 @@ print("\nClass distribution:")
 print("Non-churn customers:", negative_count)
 print("Churn customers:", positive_count)
 
-print("XGBoost scale_pos_weight:", round(scale_pos_weight, 2))
+# print("XGBoost scale_pos_weight:", round(scale_pos_weight, 2))
 
 
 # --------------------------------------------------
@@ -83,7 +83,7 @@ models = {
         n_estimators=200,
         max_depth=10,
         min_samples_leaf=5,
-        max_features="sqrt",
+        
         class_weight="balanced",
         random_state=42,
         n_jobs=-1
@@ -93,9 +93,6 @@ models = {
         n_estimators=200,
         max_depth=4,
         learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        scale_pos_weight=scale_pos_weight,
         eval_metric="logloss",
         random_state=42,
         n_jobs=-1

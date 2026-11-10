@@ -581,17 +581,17 @@ The calculated XGBoost positive-class weight was approximately 2.77.
 
 # 4. Day 4 Champion Model
 
-**Selected model: XGBoost**
+**Selected model: Random Forest**
 
-XGBoost was selected because it achieved the highest recall, F1-score, and ROC-AUC among the two Day 4 ensemble candidates.
+Random Forest was selected because it achieved the highest recall, F1-score, and ROC-AUC among the two Day 4 ensemble candidates.
 
 ### Final Metrics
 
-- Accuracy: 75.87%
-- Precision: 53.06%
-- Recall: 78.88%
-- F1 Score: 63.44%
-- ROC-AUC: 84.42%
+- Accuracy: 75.94%
+- Precision: 53.18%
+- Recall: 78.34%
+- F1 Score: 63.35%
+- ROC-AUC: 84.14%
 
 The complete trained pipeline was saved as:
 
@@ -603,11 +603,11 @@ Loaded the saved model and generated predictions for five customer records.
 
 | Customer | Prediction | Churn Probability |
 |---|---|---:|
-| 1 | No | 2.09% |
-| 2 | Yes | 94.56% |
-| 3 | No | 25.12% |
-| 4 | Yes | 56.77% |
-| 5 | No | 1.63% |
+| 1 | No | 3.02% |
+| 2 | Yes | 86.50% |
+| 3 | No | 15.02% |
+| 4 | Yes | 55.62% |
+| 5 | No | 5.77% |
 
 The saved model successfully loaded and generated predictions using the complete preprocessing and feature-engineering pipeline.
 
@@ -615,7 +615,7 @@ The saved model successfully loaded and generated predictions using the complete
 
 Day 4 introduced domain-based feature engineering, feature selection experiments, and ensemble learning.
 
-XGBoost achieved the highest churn recall among the Day 4 ensemble candidates, reaching 78.88%.
+Random Forest achieved the highest churn recall among the Day 4 ensemble candidates, reaching 78.34%.
 
 The model is saved as a reusable pipeline for subsequent prediction and deployment work.
 
@@ -638,7 +638,7 @@ The model is saved as a reusable pipeline for subsequent prediction and deployme
 - Used class weights to handle class imbalance.
 
 ### 3. Model Comparison
-Compared the Day 5 ANN with the Day 4 XGBoost champion using:
+Compared the Day 5 ANN with the Day 4 Random Forest champion using:
 - Accuracy
 - Precision
 - Recall
