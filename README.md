@@ -581,17 +581,17 @@ The calculated XGBoost positive-class weight was approximately 2.77.
 
 # 4. Day 4 Champion Model
 
-**Selected model: Random Forest**
+**Selected model: XGBoost**
 
-Random Forest was selected because it achieved the highest recall, F1-score, and ROC-AUC among the two Day 4 ensemble candidates.
+XGBoost was selected because it achieved the highest recall, F1-score, and ROC-AUC among the two Day 4 ensemble candidates.
 
 ### Final Metrics
 
-- Accuracy: 75.94%
-- Precision: 53.18%
-- Recall: 78.34%
-- F1 Score: 63.35%
-- ROC-AUC: 84.14%
+- Accuracy: 75.87%
+- Precision: 53.06%
+- Recall: 78.88%
+- F1 Score: 63.44%
+- ROC-AUC: 84.42%
 
 The complete trained pipeline was saved as:
 
@@ -603,11 +603,11 @@ Loaded the saved model and generated predictions for five customer records.
 
 | Customer | Prediction | Churn Probability |
 |---|---|---:|
-| 1 | No | 3.02% |
-| 2 | Yes | 86.50% |
-| 3 | No | 15.02% |
-| 4 | Yes | 55.62% |
-| 5 | No | 5.77% |
+| 1 | No | 2.09% |
+| 2 | Yes | 94.56% |
+| 3 | No | 25.12% |
+| 4 | Yes | 56.77% |
+| 5 | No | 1.63% |
 
 The saved model successfully loaded and generated predictions using the complete preprocessing and feature-engineering pipeline.
 
@@ -615,7 +615,7 @@ The saved model successfully loaded and generated predictions using the complete
 
 Day 4 introduced domain-based feature engineering, feature selection experiments, and ensemble learning.
 
-Random Forest achieved the highest churn recall among the Day 4 ensemble candidates, reaching 78.34%.
+XGBoost achieved the highest churn recall among the Day 4 ensemble candidates, reaching 78.88%.
 
 The model is saved as a reusable pipeline for subsequent prediction and deployment work.
 
@@ -638,7 +638,7 @@ The model is saved as a reusable pipeline for subsequent prediction and deployme
 - Used class weights to handle class imbalance.
 
 ### 3. Model Comparison
-Compared the Day 5 ANN with the Day 4 Random Forest champion using:
+Compared the Day 5 ANN with the Day 4 XGBoost champion using:
 - Accuracy
 - Precision
 - Recall
@@ -675,6 +675,265 @@ Build a computer vision module to automatically classify fashion product images.
 
 ### 4. Saved Model
 - models/fashion_cnn.keras
+
+
+# Day 7 – Transfer Learning & Object Detection
+
+## Objective
+
+Improve product image classification using Transfer Learning with pretrained deep learning models. The objective is to replace the CNN built from scratch in Day 6 with a pretrained VGG16 model and compare its performance.
+
+The assignment also introduces object detection using YOLO to detect and locate products in catalog images.
+
+## Dataset
+
+**Dataset:** Fashion Product Images
+
+**Source:** [Kaggle – Fashion Product Images Small](https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-small)
+
+The dataset contains:
+- Product images stored in the `images/` directory.
+- `styles.csv` containing product metadata such as product ID, master category, and article type.
+
+The `masterCategory` column is used as the target label for image classification.
+
+## Technologies & Libraries
+
+- Python
+- TensorFlow / Keras
+- VGG16 (ImageNet pretrained weights)
+- NumPy
+- Pandas
+- Scikit-learn
+
+## Implementation
+
+All Day 7 implementation is maintained in a single Python file:
+
+`src/Day7_transfer_learning.py`
+
+### 1. Data Preparation
+
+- Loaded product metadata from `styles.csv`.
+- Removed records with missing labels or invalid image IDs.
+- Verified that corresponding image files exist.
+- Encoded product categories using LabelEncoder.
+- Divided the dataset into training, validation, and testing sets.
+
+### 2. Transfer Learning with VGG16
+
+Used the pretrained VGG16 architecture with ImageNet weights.
+
+Instead of training the entire network from scratch:
+
+- Loaded VGG16 without its original classification layer.
+- Froze the pretrained convolutional layers.
+- Added a new classification head using Global Average Pooling, Dense, and Dropout layers.
+- Trained the new classification head for product category prediction.
+
+### 3. Fine-Tuning
+
+After training the classification head:
+
+- Unfroze the top layers of VGG16.
+- Kept the remaining pretrained layers frozen.
+- Used a smaller learning rate for fine-tuning.
+- Used EarlyStopping to help prevent unnecessary training.
+
+### 4. Model Evaluation
+
+Evaluated the trained VGG16 model on the test dataset using classification accuracy.
+
+The Day 7 model is also compared against the CNN model developed in Day 6 to understand the impact of transfer learning on product classification performance.
+
+### 5. Model Saving
+
+The trained model is saved at:
+
+`models/fashion_vgg16.keras`
+
+## Object Detection – Not Implemented
+
+The assignment also required product detection and localization using a pretrained YOLO model.
+
+However, the provided Fashion Product Images dataset contains image-level classification labels through `styles.csv`. It does not provide bounding-box annotations that specify the location and dimensions of products within images.
+
+YOLO object detection training requires bounding-box annotations containing:
+
+- Class ID
+- Bounding-box center X coordinate
+- Bounding-box center Y coordinate
+- Bounding-box width
+- Bounding-box height
+
+Since these annotations were not available in the provided dataset, custom YOLO training and proper detection evaluation could not be performed.
+
+Therefore, the Day 7 implementation focuses on transfer learning using VGG16 for product image classification.
+
+**Not implemented:**
+- Custom YOLO object detector training.
+- Bounding-box prediction and product localization.
+- Object detection evaluation.
+
+**Future Improvement:** Use a dataset containing bounding-box annotations or manually annotate product images to implement and evaluate YOLO-based object detection.
+
+Note: A pretrained YOLO model can perform inference without custom annotations, but annotations are needed for supervised training and proper evaluation against ground truth.
+
+## Results
+
+| Metric | Result |
+|---|---|
+| Day 6 CNN Test Accuracy | Pending execution |
+| Day 7 VGG16 Test Accuracy | Pending execution |
+| Model Comparison | Pending execution |
+
+Actual accuracy values will be updated after successfully training and evaluating both models.
+
+## Final Outcome
+
+- Implemented a transfer-learning workflow using pretrained VGG16.
+- Added a custom classification head for product category prediction.
+- Implemented fine-tuning of the top pretrained layers.
+- Prepared evaluation and comparison with the Day 6 CNN.
+- Saved the upgraded model as `fashion_vgg16.keras` after successful training.
+- Documented the limitation preventing YOLO object detection implementation due to missing bounding-box annotations.
+
+## Project File
+
+`src/Day7_transfer_learning.py`
+
+
+# Day 8 – Segmentation & End-to-End Computer Vision
+
+## Objective
+
+Extend the RetailMind AI computer vision pipeline by adding product segmentation, background removal, clean catalog image generation, Grad-CAM explainability, and product localization.
+
+Day 8 builds on the VGG16 transfer learning model developed on Day 7 and creates a more complete and explainable computer vision workflow.
+
+---
+
+## Dataset
+
+**Dataset:** Fashion Product Images Small
+
+**Source:** Kaggle – Fashion Product Images Small
+
+The dataset contains:
+
+- Product images stored inside the `images/` directory.
+- `styles.csv` containing product metadata.
+- Product categories available through the `masterCategory` column.
+
+The dataset does not contain pixel-level segmentation masks or ground-truth bounding-box annotations.
+
+---
+
+## Technologies & Libraries
+
+- Python
+- TensorFlow / Keras
+- VGG16
+- OpenCV
+- NumPy
+- Grad-CAM
+
+---
+
+## Implementation
+
+The complete Day 8 implementation is available in:
+
+`src/Day8_segmentation_gradcam.py`
+
+The pipeline integrates the Day 7 VGG16 classification model with segmentation, background removal, explainability, and product localization.
+
+---
+
+## 1. Day 7 Model Integration
+
+Day 8 reuses the transfer learning model trained on Day 7:
+
+`models/fashion_vgg16.keras`
+
+The same input configuration used during Day 7 is maintained:
+
+- Image size: `128 × 128`
+- VGG16 preprocessing using `preprocess_input`
+- Target variable: `masterCategory`
+
+Using the same preprocessing during training and prediction ensures consistency between Day 7 and Day 8.
+
+---
+
+## 2. Product Classification
+
+The saved VGG16 model is used to classify the input product image.
+
+The pipeline:
+
+1. Loads the product image using OpenCV.
+2. Converts the image from BGR to RGB.
+3. Resizes the image to `128 × 128`.
+4. Applies VGG16 `preprocess_input`.
+5. Passes the image through the saved Day 7 model.
+6. Selects the class having the highest predicted probability.
+
+The pipeline returns:
+
+- Predicted class index
+- Predicted `masterCategory`
+- Prediction confidence
+
+---
+
+## 3. Grad-CAM Explainability
+
+Grad-CAM was added to make the VGG16 classification result more explainable.
+
+Grad-CAM uses the final convolutional layer of VGG16:
+
+`block5_conv3`
+
+The process calculates the gradients of the predicted class with respect to the convolutional feature maps.
+
+These gradients are used to determine which regions of the product image contributed most strongly to the model prediction.
+
+The resulting heatmap provides a visual explanation of the classification decision.
+
+Typical interpretation:
+
+- Red / Yellow regions → Stronger influence on prediction
+- Blue regions → Lower influence on prediction
+
+A Grad-CAM overlay is generated by placing the heatmap over the original product image.
+
+---
+
+## 4. Product Segmentation
+
+The Grad-CAM heatmap is also used to estimate the important foreground region of the product image.
+
+The segmentation workflow is:
+
+```text
+Input Image
+    ↓
+VGG16 Classification
+    ↓
+Grad-CAM Heatmap
+    ↓
+Initial Binary Mask
+    ↓
+OpenCV GrabCut Refinement
+    ↓
+Final Product Mask
+
+
+
+
+
+
 # Installation and Execution
 
 ## 1. Clone the Repository
@@ -753,10 +1012,15 @@ python src/learning_analysis.py
 
 | Day | Activities | Status |
 |---|---|---|
-| Day 1 | EDA, preprocessing, Logistic Regression baseline, prediction pipeline | Completed |
-| Day 2 | Decision Tree, Random Forest, SVM model comparison | Completed |
-| Day 3 | GridSearchCV, hyperparameter tuning, champion selection | Completed |
-| Day 3 | Learning curve and bias-variance analysis | Pending final visualization review |
+| Day 1 | EDA, preprocessing and Logistic Regression baseline | Completed |
+| Day 2 | Decision Tree, Random Forest and SVM comparison | Completed |
+| Day 3 | GridSearchCV, hyperparameter tuning and bias-variance analysis | Completed |
+| Day 4 | Feature engineering, feature selection and ensemble learning | Completed |
+| Day 5 | ANN and deep learning for customer churn classification | Completed |
+| Day 6 | CNN-based fashion product image classification | Completed |
+| Day 7 | VGG16 transfer learning and fine-tuning | Completed |
+| Day 8 | Product segmentation, background removal, Grad-CAM explainability and end-to-end CV integration | Completed |
+
 
 ---
 
